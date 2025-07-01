@@ -1,18 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.30;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Token is ERC20, ERC20Permit, Ownable {
+contract Token is ERC20, ERC20Permit, ReentrancyGuard, Ownable {
     mapping(address => bool) public whitelist;
+    mapping(address => uint256) public balances; // to track eth balances for addresses
 
     // Events for whitelist actions
     event AddToWhitelist(address indexed account);
     event RemoveFromWhitelist(address indexed account);
+    event Deposited(address indexed account, uint256 amount);
+    event Withdrawn(address indexed account, uint256 amount);
 
-    constructor() ERC20("Token", "TKN") ERC20Permit("Token") Ownable(msg.sender) {
+    constructor() ERC20("Token", "TKN") ERC20Permit("Token") Ownable() {
         _mint(msg.sender, 1000000 * 10 ** decimals()); // Mint initial supply to owner
         whitelist[msg.sender] = true; // adds owner to whitelist by default
         emit AddToWhitelist(msg.sender); 
@@ -54,4 +58,20 @@ contract Token is ERC20, ERC20Permit, Ownable {
 
     // approve(address spender, uint256 amount) function inherited from OpenZeppelin ERC20
     // Used to allow delegated transfers by spender via transferFrom    
+
+    receive() external payable {
+        balances[msg.sender] += msg.value;
+        emit Deposited(msg.sender, msg.value);
+    }
+
+    function withdraw() external nonReentrant {
+        uint256 amount = balances[msg.sender];
+        require(amount > 0, "No ETH to withdraw");
+
+        balances[msg.sender] = 0;
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Withdraw failed");
+
+        emit Withdrawn(msg.sender, amount);
+    }
 }
