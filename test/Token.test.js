@@ -228,4 +228,30 @@ describe("Token Contract", function () {
 		);
     	});
   	});
+
+    describe("Re-entrancy Protection", function () {
+        it("Should reset balance for address to zero after withdrawal", async function () {
+            const depositAmount = ethers.parseEther("1.0");
+
+            // addr1 sends 1 ETH to the contract
+            await addr1.sendTransaction({
+                to: token.target,
+                value: depositAmount,
+            });
+
+            // Expect withdraw to emit event
+            await expect(token.connect(addr1).withdraw())
+                .to.emit(token, "Withdrawn")
+                .withArgs(addr1.address, depositAmount);
+
+            // Check contract internal balance for addr1 is 0
+            expect(await token.balances(addr1.address)).to.equal(0);
+        });
+
+        it("Should revert if user tries to withdraw 0 balance", async function () {
+            await expect(token.connect(addr2).withdraw()).to.be.revertedWith("No ETH to withdraw");
+        });
+
+    });
+
 });
