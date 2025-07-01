@@ -27,6 +27,8 @@ Open .env and replace the placeholder values:
   - Built on top of the whitelist feature; delegated transfers (`transferFrom`) are only allowed if the caller, sender, and recipient are all whitelisted.
   - `approve(address spender, uint256 amount)` is inherited from OpenZeppelin's ERC20 implementation.
   - Enhanced with support for `permit()` (EIP-2612), which enables gasless approvals through the use of signed messages.
+- Re-entrancy Protection Functionality:
+  - Implements a `withdraw` method using OpenZeppelin's ReentrancyGuard to prevent re-entrancy attacks during ETH transfers.  
 
 - Unit Tests: Comprehensive coverage including:
 
@@ -53,11 +55,17 @@ Open .env and replace the placeholder values:
     - Allows off-chain approvals using signed messages via the `permit` function.
     - Test validates that a spender can be approved through `permit()` without calling `approve()`, and the resulting allowance is correctly updated.
 
+  - Re-entrancy Protection (`withdraw`):
+    - Ensures `withdraw` function resets balances for user's address
+    - Reverts if there are no funds available for withdrawal. 
+    - Emits appropriate events (`Withdrawn`).
+
+https://medium.com/@mayankchhipa007/openzeppelin-reentrancy-guard-a-quickstart-guide-7f5e41ee388f
 
 ## 4. Deployment/ Testing 
 To deploy to Sepolia Testnet:
 ```bash
-npm hardhat run scripts/deploy.js --network sepolia
+npx hardhat run scripts/deploy.js --network sepolia
 ```
 
 To run unit tests:
@@ -66,11 +74,15 @@ npx hardhat test
 ```
 
 ## 5. Deployed contract address
-- [TODO: Add deployed contract address]
+- [0xa0F2B0469417a6bd6FdE733c967d945eb75e01ed] (https://sepolia.etherscan.io/address/0xa0F2B0469417a6bd6FdE733c967d945eb75e01ed)
+
 
 ## 6. Testnet used
-- [TODO: Add Testnet]
+- Sepolia Testnet
 
+## 7. References 
+- [Basic Explanation of How Whitelisting Works in Solidity](https://dev.to/muratcanyuksel/basic-explanation-of-how-whitelisting-works-in-solidity-f19) – Article by Murat Can Yuksel on DEV Community
+- [OpenZeppelin Reentrancy Guard: A Quickstart Guide](https://medium.com/@mayankchhipa007/openzeppelin-reentrancy-guard-a-quickstart-guide-7f5e41ee388f) – Article by Mayank Chhipa on Medium
 
 
 
