@@ -1,6 +1,6 @@
 # Enhanced ERC20 Token Contract
 
-An ERC20-compliant token deployed to the Sepolia testnet, enhanced with whitelist functionality, delegation (allowance) and EIP-2612 permit support.
+An ERC20-compliant token deployed to the Sepolia testnet, enhanced with whitelist functionality, delegation (allowance), EIP-2612 permit support and re-entrancy protection.
 
 ---
 
@@ -61,8 +61,6 @@ Open .env and replace the placeholder values:
     - Ensures `withdraw` function resets balances for user's address
     - Reverts if there are no funds available for withdrawal. 
     - Emits appropriate events (`Withdrawn`).
-
-https://medium.com/@mayankchhipa007/openzeppelin-reentrancy-guard-a-quickstart-guide-7f5e41ee388f
 
 ## 4. Deployment/ Testing 
 To deploy to Sepolia Testnet:
