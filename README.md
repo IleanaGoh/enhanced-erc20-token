@@ -13,8 +13,10 @@ npm install
 ## 2. Create and configure .env file
 Copy contents of `.env.example` and create a `.env` file
 Open .env and replace the placeholder values:
-- For SEPOLIA_RPC_URL: go to infuria.io (MetaMask Developer) and copy your API key 
-- For private key: go to MetaMask wallet (Account Details > Details > Show private key)
+- **SEPOLIA_RPC_URL**: go to [infura.io](https://www.infura.io/) (MetaMask Developer) and copy your API key 
+- **PRIVATE_KEY**: Get private key from MetaMask:
+  - Download [MetaMask Chrome Extension](https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en) 
+  - Go to **Account Details > Details > Export Private Key**
 
 ## 3. Description of Implemented Features
 
@@ -30,7 +32,7 @@ Open .env and replace the placeholder values:
 - Re-entrancy Protection Functionality:
   - Implements a `withdraw` method using OpenZeppelin's ReentrancyGuard to prevent re-entrancy attacks during ETH transfers.  
 
-- Unit Tests: Comprehensive coverage including:
+- Unit Tests:
 
   - Deployment:
     - Verify contract owner is correctly set.
@@ -53,7 +55,7 @@ Open .env and replace the placeholder values:
 
   - EIP-2612 Permit Functionality:
     - Allows off-chain approvals using signed messages via the `permit` function.
-    - Test validates that a spender can be approved through `permit()` without calling `approve()`, and the resulting allowance is correctly updated.
+    - Verifies that a spender can be approved through `permit()` without calling `approve()`, and the resulting allowance is correctly updated.
 
   - Re-entrancy Protection (`withdraw`):
     - Ensures `withdraw` function resets balances for user's address
@@ -73,14 +75,11 @@ To run unit tests:
 npx hardhat test
 ```
 
-## 5. Deployed contract address
-- [0xa0F2B0469417a6bd6FdE733c967d945eb75e01ed] (https://sepolia.etherscan.io/address/0xa0F2B0469417a6bd6FdE733c967d945eb75e01ed)
+## 5. Deployed contract address & Testnet used
+- Deployed contract address: [0xa0F2B0469417a6bd6FdE733c967d945eb75e01ed](https://sepolia.etherscan.io/address/0xa0F2B0469417a6bd6FdE733c967d945eb75e01ed)
+- Deployed to **Sepolia Testnet**. 
 
-
-## 6. Testnet used
-- Sepolia Testnet
-
-## 7. References 
+## 6. References 
 - [Basic Explanation of How Whitelisting Works in Solidity](https://dev.to/muratcanyuksel/basic-explanation-of-how-whitelisting-works-in-solidity-f19) – Article by Murat Can Yuksel on DEV Community
 - [OpenZeppelin Reentrancy Guard: A Quickstart Guide](https://medium.com/@mayankchhipa007/openzeppelin-reentrancy-guard-a-quickstart-guide-7f5e41ee388f) – Article by Mayank Chhipa on Medium
 
