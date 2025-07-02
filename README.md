@@ -14,7 +14,7 @@ npm install
 Copy contents of `.env.example` and create a `.env` file
 Open .env and replace the placeholder values:
 - **SEPOLIA_RPC_URL**: go to [infura.io](https://www.infura.io/) (MetaMask Developer) and copy your API key 
-- **PRIVATE_KEY**: Get private key from MetaMask:
+- **PRIVATE_KEY**: Setup a Web3 Wallet (If you already have a wallet, just paste the private key, otherwise, get private key from MetaMask):
   - Download [MetaMask Chrome Extension](https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en) 
   - Go to **Account Details > Details > Export Private Key**
 
